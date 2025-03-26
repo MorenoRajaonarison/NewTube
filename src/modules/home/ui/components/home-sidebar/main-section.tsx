@@ -1,6 +1,7 @@
 'use client'
 
 import { SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar"
+import { useClerk, useAuth } from "@clerk/nextjs"
 import { FlameIcon, HomeIcon, PlaySquareIcon } from "lucide-react"
 import Link from "next/link"
 
@@ -11,6 +12,9 @@ const menus = [
 ]
 
 export const Mainsection = () => {
+    const clerk = useClerk()
+    const {isSignedIn} = useAuth()
+    
     return (
         <SidebarGroup>
             <SidebarGroupContent>
@@ -21,7 +25,12 @@ export const Mainsection = () => {
                                 tooltip={menu.title}
                                 asChild
                                 isActive={false}
-                                onClick={() => {}}
+                                onClick={(e) => {
+                                    if(!isSignedIn && menu.auth) {
+                                        e.preventDefault()
+                                        return clerk.openSignIn()
+                                    }
+                                }}
                             >
                                 <Link href={menu.url} className="flex items-center gap-4">
                                     <menu.icon />

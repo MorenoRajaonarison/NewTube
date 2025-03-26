@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import {
+  ClerkProvider,
+} from '@clerk/nextjs'
 import { Inter } from "next/font/google";
 import "./globals.css";
 
@@ -18,6 +21,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    <ClerkProvider afterSignOutUrl="/">
     <html lang="en">
       <body
         className={inter.className}
@@ -25,5 +29,6 @@ export default function RootLayout({
         {children}
       </body>
     </html>
+    </ClerkProvider>
   );
 }
